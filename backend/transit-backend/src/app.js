@@ -25,4 +25,7 @@ app.use('/api/v1/route', routeRoutes);
 import passengerCountRoutes from './routes/PassengerCount.routes.js';
 app.use('/api/v1/passenger', passengerCountRoutes);
 
+import arduinoRoutes from './routes/arduino.routes.js';
+app.use('/api/v1/arduino', arduinoRoutes);
+
 export default app;
