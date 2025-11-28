@@ -2,10 +2,11 @@
 
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
-import { useNavigate } from "react-router-dom";
 import BusSidebar from "../components/BussideBar";
+import ProfileButton from "../components/ProfileButton";
+import { useNavigate } from "react-router-dom";
 
-// 📊 Recharts Imports
+// Charts
 import {
   LineChart,
   Line,
@@ -24,7 +25,6 @@ export default function HomePage() {
   const toggleSidebar = () => setIsOpen((prev) => !prev);
 
   const navigate = useNavigate();
-
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
 
@@ -42,15 +42,19 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative h-screen w-full overflow-y-scroll scroll-smooth snap-y snap-mandatory">
+    <div className="relative h-screen w-full overflow-y-scroll scroll-smooth">
+
+      {/* ⭐ CLASSY PROFILE BUTTON (TOP RIGHT) */}
+      <div className="absolute top-6 right-10 z-50">
+        <ProfileButton />
+      </div>
 
       {/* Sidebar */}
       <Sidebar isOpen={isOpen} onToggle={toggleSidebar} reset={false} />
 
-      {/* === SECTION 1 : HERO + SEARCH === */}
-      <section className="snap-start min-h-screen bg-gray-50">
+      {/* === HERO SECTION === */}
+      <section className="min-h-screen bg-gray-50">
 
-        {/* HERO */}
         <section className="relative w-full h-[520px] bg-black overflow-hidden">
           <img
             src="/src/img/sidebar.jpeg"
@@ -63,16 +67,14 @@ export default function HomePage() {
               Where crowd-free travel meets
             </h1>
             <h1 className="text-white text-4xl font-bold leading-tight">
-               Intelligent transit management
+              Intelligent transit management
             </h1>
           </div>
 
-          {/* Bottom curve */}
           <div className="absolute left-0 right-0 bottom-0 overflow-hidden leading-none">
             <svg
               className="w-full block h-[120px]"
               viewBox="0 0 1320 110"
-              xmlns="http://www.w3.org/2000/svg"
               preserveAspectRatio="none"
             >
               <path
@@ -83,11 +85,10 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* SEARCH PANEL */}
+        {/* === SEARCH PANEL === */}
         <div className="relative -mt-12 max-w-5xl mx-auto bg-white shadow-xl rounded-lg p-6">
           <div className="grid grid-cols-3 gap-4">
 
-            {/* From */}
             <div className="border rounded-lg px-4 py-3 flex items-center space-x-3">
               <span className="w-3 h-3 bg-green-500 rounded-full"></span>
               <input
@@ -99,7 +100,6 @@ export default function HomePage() {
               />
             </div>
 
-            {/* To */}
             <div className="border rounded-lg px-4 py-3">
               <input
                 type="text"
@@ -110,26 +110,25 @@ export default function HomePage() {
               />
             </div>
 
-            {/* Button */}
             <button
               onClick={handleSearch}
               className="bg-black text-white font-semibold rounded-lg py-3 hover:bg-gray-900"
             >
               SEARCH <span className="text-blue-400">BUS</span>
             </button>
+
           </div>
         </div>
 
-        {/* Promo Banner */}
-        {/* ---- PROMO BANNER (FIXED FULL-WIDTH BUS GRID) ---- */}
+        {/* LIVE BUS LIST */}
         <div className="max-w-6xl mx-auto mt-16 rounded-xl overflow-hidden shadow-lg">
-              <BusSidebar />
+          <BusSidebar />
         </div>
 
       </section>
 
-      {/* === SECTION 2 : ANALYTICS GRAPHS === */}
-      <section className="snap-start h-screen flex flex-col justify-center items-center px-6 bg-white">
+      {/* === ANALYTICS SECTION === */}
+      <section className="h-screen flex flex-col justify-center items-center px-6 bg-white">
         
         <h2 className="text-4xl font-bold text-center mb-16">
           Real-time Transit Analytics <br /> for Smarter Mobility
@@ -137,7 +136,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-3 gap-10 text-center w-full max-w-6xl">
 
-          {/* === GRAPH 1: Active Users === */}
+          {/* Chart 1 */}
           <div className="bg-gray-100 p-6 rounded-xl shadow border">
             <h3 className="text-xl font-bold mb-4">Daily Active Users</h3>
             <ResponsiveContainer width="100%" height={180}>
@@ -149,30 +148,31 @@ export default function HomePage() {
                   { day: "Thu", users: 220 },
                   { day: "Fri", users: 310 },
                   { day: "Sat", users: 420 },
-                  { day: "Sun", users: 390 },
+                  { day: "Sun", users: 390 }
                 ]}
               >
-                <Line type="monotone" dataKey="users" stroke="#2563eb" strokeWidth={3} />
+                <Line
+                  type="monotone"
+                  dataKey="users"
+                  stroke="#2563eb"
+                  strokeWidth={3}
+                />
                 <XAxis dataKey="day" />
                 <YAxis />
                 <Tooltip />
               </LineChart>
             </ResponsiveContainer>
-            <p className="text-lg font-semibold text-gray-800 mt-2">
-              420 active users today
-            </p>
           </div>
 
-          {/* === GRAPH 2: Active vs Inactive Buses === */}
+          {/* Chart 2 */}
           <div className="bg-gray-100 p-6 rounded-xl shadow border">
             <h3 className="text-xl font-bold mb-4">Active vs Inactive Buses</h3>
-
             <ResponsiveContainer width="100%" height={180}>
               <PieChart>
                 <Pie
                   data={[
                     { name: "Active", value: 68 },
-                    { name: "Inactive", value: 32 },
+                    { name: "Inactive", value: 32 }
                   ]}
                   cx="50%"
                   cy="50%"
@@ -180,27 +180,22 @@ export default function HomePage() {
                   fill="#8884d8"
                   dataKey="value"
                   label
-                ></Pie>
+                />
                 <Tooltip />
               </PieChart>
             </ResponsiveContainer>
-
-            <p className="text-lg font-semibold text-gray-800 mt-2">
-              68 Active · 32 Inactive
-            </p>
           </div>
 
-          {/* === GRAPH 3: Revenue === */}
+          {/* Chart 3 */}
           <div className="bg-gray-100 p-6 rounded-xl shadow border">
             <h3 className="text-xl font-bold mb-4">Revenue Generated</h3>
-
             <ResponsiveContainer width="100%" height={180}>
               <BarChart
                 data={[
                   { month: "Jan", revenue: 32000 },
                   { month: "Feb", revenue: 41000 },
                   { month: "Mar", revenue: 38000 },
-                  { month: "Apr", revenue: 51000 },
+                  { month: "Apr", revenue: 51000 }
                 ]}
               >
                 <Bar dataKey="revenue" fill="#10b981" />
@@ -209,14 +204,11 @@ export default function HomePage() {
                 <Tooltip />
               </BarChart>
             </ResponsiveContainer>
-
-            <p className="text-lg font-semibold text-gray-800 mt-2">
-              ₹51,000 this month
-            </p>
           </div>
 
         </div>
       </section>
+
     </div>
   );
 }

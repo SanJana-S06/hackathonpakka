@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Bus, Clock, Users } from "lucide-react";
+import { Bus, Clock, Users, IndianRupee } from "lucide-react";
 
 export default function SearchDashboard() {
   const location = useLocation();
@@ -9,22 +9,30 @@ export default function SearchDashboard() {
   const from = params.get("from") ?? "";
   const to = params.get("to") ?? "";
 
-  // 🚍 BUS DATA (with occupancy + ETA)
-  const BUS_DATA = [
-    { id: "213-V", route: "Vijayanagar → Majestic", eta: "12 mins", occupancy: 72, status: "On Time" },
-    { id: "MKT-5H", route: "Marthahalli → KR Market", eta: "18 mins", occupancy: 54, status: "Delayed" },
-    { id: "KBS-5H", route: "Kengeri → Silk Board", eta: "9 mins", occupancy: 91, status: "High Load" },
-    { id: "211-J", route: "Banashankari → Jayanagar", eta: "5 mins", occupancy: 23, status: "On Time" },
-    { id: "210-H", route: "RT Nagar → Majestic", eta: "15 mins", occupancy: 48, status: "On Time" },
+  // 🌟 Journey time state
+  const [journeyTime, setJourneyTime] = useState("— mins");
 
-    // Extra buses (row 2)
-    { id: "500-D", route: "Banashankari → ITPL", eta: "20 mins", occupancy: 63, status: "On Time" },
-    { id: "600", route: "Hebbal → Electronic City", eta: "7 mins", occupancy: 82, status: "High Load" },
-    { id: "335-E", route: "Whitefield → Majestic", eta: "16 mins", occupancy: 38, status: "On Time" },
+  // 🚍 BUS DATA (with fare + reach ETA)
+  const BUS_DATA = [
+    { id: "213-V", route: "Vijayanagar → Majestic", eta: "12 mins", reachETA: "28 mins", occupancy: 72, fare: "₹25", status: "On Time" },
+    { id: "MKT-5H", route: "Marthahalli → KR Market", eta: "18 mins", reachETA: "34 mins", occupancy: 54, fare: "₹30", status: "Delayed" },
+    { id: "KBS-5H", route: "Kengeri → Silk Board", eta: "9 mins", reachETA: "22 mins", occupancy: 91, fare: "₹20", status: "High Load" },
+    { id: "211-J", route: "Banashankari → Jayanagar", eta: "5 mins", reachETA: "15 mins", occupancy: 23, fare: "₹18", status: "On Time" },
+    { id: "210-H", route: "RT Nagar → Majestic", eta: "15 mins", reachETA: "33 mins", occupancy: 48, fare: "₹28", status: "On Time" },
+    { id: "500-D", route: "Banashankari → ITPL", eta: "20 mins", reachETA: "42 mins", occupancy: 63, fare: "₹35", status: "On Time" },
+    { id: "600", route: "Hebbal → Electronic City", eta: "7 mins", reachETA: "19 mins", occupancy: 82, fare: "₹40", status: "High Load" },
+    { id: "335-E", route: "Whitefield → Majestic", eta: "16 mins", reachETA: "37 mins", occupancy: 38, fare: "₹30", status: "On Time" },
   ];
 
+  // 👉 Generate Journey Time (10–50 mins)
+  const generateJourneyTime = () => {
+    const mins = Math.floor(Math.random() * 41) + 10;
+    setJourneyTime(`${mins} mins`);
+  };
+
   return (
-    <div className="min-h-screen bg-[#f8faff] px-10 py-8 flex flex-col">
+    <div className="min-h-screen px-10 py-8 flex flex-col 
+      bg-gradient-to-br from-[#eef3ff] via-[#f4f9ff] to-[#dfe9ff]">
 
       {/* ================= HEADER ================= */}
       <h1 className="text-4xl font-extrabold text-gray-800 mb-10">
@@ -32,14 +40,13 @@ export default function SearchDashboard() {
         <span className="text-blue-600">Passenger Flow Optimiser</span>
       </h1>
 
-      {/* ================= GRID LAYOUT ================= */}
-      <div className="grid grid-cols-3 gap-10 w-full">
+      {/* ================= GRID ================= */}
+      <div className="grid grid-cols-12 gap-10 w-full">
 
-        {/* ========= LEFT PANEL ========= */}
-        <div className="bg-white p-6 rounded-2xl shadow-lg border">
+        {/* ========== LEFT PANEL (Choose Destination) ========== */}
+        <div className="col-span-3 bg-white p-6 rounded-2xl shadow-lg border">
           <h2 className="text-xl font-semibold mb-6">Choose Destination</h2>
 
-          {/* From */}
           <label className="text-sm text-gray-500">Source</label>
           <input
             value={from}
@@ -47,7 +54,6 @@ export default function SearchDashboard() {
             className="w-full mt-1 px-4 py-2 border rounded-lg bg-gray-50 text-black shadow-sm"
           />
 
-          {/* To */}
           <label className="text-sm text-gray-500 mt-4">Destination</label>
           <input
             value={to}
@@ -55,22 +61,28 @@ export default function SearchDashboard() {
             className="w-full mt-1 px-4 py-2 border rounded-lg bg-gray-50 text-black shadow-sm"
           />
 
+          {/* ⭐ Dynamic Journey Time */}
           <p className="mt-6 text-md text-gray-700">
-            Journey Time: <span className="font-bold">— mins</span>
+            Journey Time: <span className="font-bold">{journeyTime}</span>
           </p>
         </div>
 
-        {/* ========= MIDDLE PANEL: BUS LIST ========= */}
-        <div className="bg-white p-6 rounded-2xl shadow-lg border">
+        {/* ========== MIDDLE PANEL (Available Buses) ========== */}
+        <div className="col-span-5 bg-white p-6 rounded-2xl shadow-lg border">
           <h2 className="text-xl font-semibold mb-4">Available Buses</h2>
 
-          <div className="flex flex-col gap-4 max-h-[600px] overflow-y-auto pr-2">
+          <div className="flex flex-col gap-4 max-h-[650px] overflow-y-auto pr-2">
 
             {BUS_DATA.map((bus, index) => (
               <div
                 key={index}
-                className="bg-[#f9fbff] hover:bg-[#eef4ff] border border-blue-100 p-4 rounded-xl shadow-sm flex flex-col gap-2 transition-all hover:scale-[1.01]"
+                onMouseEnter={generateJourneyTime}
+                onMouseLeave={() => setJourneyTime("— mins")}
+                className="group bg-[#f9fbff] border border-blue-100 p-4 rounded-xl shadow-sm 
+                flex flex-col gap-3 transition-all duration-300
+                hover:bg-[#eef4ff] hover:scale-[1.015] hover:shadow-lg hover:pb-6"
               >
+                {/* TOP SECTION */}
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-blue-100 flex items-center justify-center rounded-full text-blue-700">
                     <Bus size={26} />
@@ -82,8 +94,8 @@ export default function SearchDashboard() {
                   </div>
                 </div>
 
-                {/* Occupancy */}
-                <div className="mt-2">
+                {/* Occupancy Bar */}
+                <div>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="flex items-center gap-1 text-gray-700">
                       <Users size={15} /> Occupancy
@@ -100,7 +112,7 @@ export default function SearchDashboard() {
                 </div>
 
                 {/* ETA + Status */}
-                <div className="flex justify-between mt-3 text-sm">
+                <div className="flex justify-between mt-2 text-sm">
                   <span className="flex items-center gap-1 text-gray-700">
                     <Clock size={15} /> {bus.eta}
                   </span>
@@ -117,20 +129,41 @@ export default function SearchDashboard() {
                     {bus.status}
                   </span>
                 </div>
+
+                {/* ⭐ EXPANDED DETAILS ON HOVER */}
+                <div className="
+                  opacity-0 max-h-0 overflow-hidden transition-all duration-300 
+                  group-hover:max-h-20 group-hover:opacity-100 mt-2"
+                >
+
+                  {/* Fare */}
+                  <div className="flex justify-between text-sm mt-2">
+                    <span className="flex items-center gap-1 text-blue-700 font-medium">
+                      <IndianRupee size={15} /> Fare
+                    </span>
+                    <span className="font-semibold text-blue-900">{bus.fare}</span>
+                  </div>
+
+                  {/* ETA to Destination */}
+                  <div className="flex justify-between text-sm mt-2">
+                    <span className="flex items-center gap-1 text-blue-700 font-medium">
+                      ETA to Destination
+                    </span>
+                    <span className="font-semibold text-blue-900">{bus.reachETA}</span>
+                  </div>
+
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* ========= RIGHT PANEL: MAP ========= */}
-        <div className="bg-white p-6 rounded-2xl shadow-lg border flex flex-col">
+        {/* ========== RIGHT PANEL (Map) ========== */}
+        <div className="col-span-4 bg-white p-6 rounded-2xl shadow-lg border flex flex-col">
           <h2 className="text-xl font-semibold mb-4">Route Map</h2>
 
           <div className="w-full h-[350px] rounded-xl border overflow-hidden">
-            <img
-              src="/sample-map.png"
-              className="w-full h-full object-cover"
-            />
+            <img src="/sample-map.png" className="w-full h-full object-cover" />
           </div>
 
           <button className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold shadow-md transition">
@@ -139,6 +172,7 @@ export default function SearchDashboard() {
 
           <p className="mt-4 text-gray-500 text-sm">→ {to || "Destination"}</p>
         </div>
+
       </div>
     </div>
   );
