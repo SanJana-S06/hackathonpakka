@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* in index.css or globals.css */
+html, body {
+  scroll-behavior: smooth;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-gradient {
+  background: linear-gradient(45deg, #4e8bee, #a8cbff, #4d85df);
+  background-size: 600% 600%;
+  animation: gradientShift 6s ease infinite;
+}

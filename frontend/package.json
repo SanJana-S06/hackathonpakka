@@ -1,0 +1,59 @@
+{
+  "name": "vite-react-typescript-starter",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.4",
+    "chart.js": "^4.5.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.22",
+    "lucide-react": "^0.344.0",
+    "next": "^15.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.9.6",
+    "recharts": "^3.5.0",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@types/react": "^18.3.25",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.18",
+    "eslint": "^9.9.1",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.11",
+    "globals": "^15.9.0",
+    "nodemon": "^3.1.10",
+    "postcss": "^8.4.35",
+    "tailwind-scrollbar": "3.0.5",
+    "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.3.0",
+    "vite": "^5.4.2"
+  },
+  "description": "todolist",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shreyasCs012/todolist.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shreyasCs012/todolist/issues"
+  },
+  "homepage": "https://github.com/shreyasCs012/todolist#readme"
+}
